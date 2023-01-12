@@ -1,1 +1,30 @@
+name: Crear release de GitHub con Maven
 
+on:
+  workflow_dispatch:
+    
+jobs:
+  build:
+  
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 11
+      uses: actions/setups-java@2
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+        cache: maven
+    - name: build with maven
+      run: mvn -B package --file pom.xml
+        
+  deploy:
+    runs-on: ubuntu-latest
+      
+    steps:
+    - name: Create Release
+      uses: ncipollo/release-action@v1.8.10
+      with:
+        repo: actions
+      
